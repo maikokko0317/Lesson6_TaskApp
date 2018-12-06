@@ -51,10 +51,10 @@ public class TaskAdapter extends BaseAdapter {
 
         TextView textView1 = (TextView) convertView.findViewById(android.R.id.text1); //タイトル
         TextView textView2 = (TextView) convertView.findViewById(android.R.id.text2); //日時
-        TextView textView3 = (TextView) convertView.findViewById(android.R.id.text3); //カテゴリ
+      //  TextView textView3 = (TextView) convertView.findViewById(android.R.id.text3); //カテゴリ
 
         textView1.setText(mTaskList.get(position).getTitle());
-        textView3.setText(mTaskList.get(position).getTitle());
+      //  textView3.setText(mTaskList.get(position).getTitle());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPANESE);
         Date date = mTaskList.get(position).getDate();
