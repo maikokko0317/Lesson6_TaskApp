@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadListView() {
         // Realmデータベースから、「全てのデータを取得して新しい日時順に並べた結果」を取得
-        //RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
-        RealmResults<Task> taskRealmResults = mRealm.where(Task.class).filter("category == 'category1'").findAll().sort("date", Sort.DESCENDING);
+        RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
+        //RealmResults<Task> taskRealmResults = mRealm.where(Task.class).equalTo("category", "category2").findAll().sort("date", Sort.DESCENDING);
         // 上記の結果を、TaskList としてセットする
         mTaskAdapter.setTaskList(mRealm.copyFromRealm(taskRealmResults));
         // TaskのListView用のアダプタに渡す

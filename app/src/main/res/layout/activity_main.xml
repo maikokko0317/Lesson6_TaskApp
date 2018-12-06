@@ -8,10 +8,23 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="検索条件" />
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_edit_text"
+        android:text="検索" />
+
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_button"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
