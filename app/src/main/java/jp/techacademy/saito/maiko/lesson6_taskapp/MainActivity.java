@@ -137,14 +137,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadListView() {
         // Realmデータベースから、「全てのデータを取得して新しい日時順に並べた結果」を取得
-        //
-        //    if (mSearchEditText.getText().toString() == null || mSearchEditText.getText().toString().isEmpty()) {
-        //        RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
-        //        Log.d("MAIKO_LOG", "2: " + mSearchEditText.getText().toString());
-        //    } else {
-                    RealmResults<Task> taskRealmResults = mRealm.where(Task.class).equalTo("category", mSearchEditText.getText().toString()).findAll().sort("date", Sort.DESCENDING);
+
+            RealmResults<Task> taskRealmResults;
+
+            if (mSearchEditText.getText().toString().isEmpty()) {
+                    taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
                     Log.d("MAIKO_LOG", "2: " + mSearchEditText.getText().toString());
-        //    }
+            } else {
+                    taskRealmResults = mRealm.where(Task.class).equalTo("category", mSearchEditText.getText().toString()).findAll().sort("date", Sort.DESCENDING);
+                    Log.d("MAIKO_LOG", "2: " + mSearchEditText.getText().toString());
+            }
         // 上記の結果を、TaskList としてセットする
             mTaskAdapter.setTaskList(mRealm.copyFromRealm(taskRealmResults));
             // TaskのListView用のアダプタに渡す
