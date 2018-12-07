@@ -1,5 +1,7 @@
 package jp.techacademy.saito.maiko.lesson6_taskapp;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,16 +9,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.util.Log;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import io.realm.Sort;
+
+import android.widget.Button;
+import android.widget.EditText;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_TASK = "jp.techacademy.taro.kirameki.taskapp.TASK";
@@ -106,6 +109,17 @@ public class MainActivity extends AppCompatActivity {
                         results.deleteAllFromRealm();
                         mRealm.commitTransaction();
 
+                        Intent resultIntent = new Intent(getApplicationContext(), TaskAlarmReceiver.class);
+                        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(
+                                MainActivity.this,
+                                task.getId(),
+                                resultIntent,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );
+
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        alarmManager.cancel(resultPendingIntent);
+
                         reloadListView();
                     }
                 });
@@ -123,13 +137,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void reloadListView() {
         // Realmデータベースから、「全てのデータを取得して新しい日時順に並べた結果」を取得
-            if (mSearchEditText.getText().toString() == null || mSearchEditText.getText().toString().isEmpty()) {
-                RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
-                Log.d("MAIKO_LOG", "2: " + mSearchEditText.getText().toString());
-            } else {
+        //
+        //    if (mSearchEditText.getText().toString() == null || mSearchEditText.getText().toString().isEmpty()) {
+        //        RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
+        //        Log.d("MAIKO_LOG", "2: " + mSearchEditText.getText().toString());
+        //    } else {
                     RealmResults<Task> taskRealmResults = mRealm.where(Task.class).equalTo("category", mSearchEditText.getText().toString()).findAll().sort("date", Sort.DESCENDING);
                     Log.d("MAIKO_LOG", "2: " + mSearchEditText.getText().toString());
-            }
+        //    }
         // 上記の結果を、TaskList としてセットする
             mTaskAdapter.setTaskList(mRealm.copyFromRealm(taskRealmResults));
             // TaskのListView用のアダプタに渡す
